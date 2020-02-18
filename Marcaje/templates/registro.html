@@ -1,0 +1,56 @@
+{% extends 'template_base.html' %} 
+{% load static %}
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/estilo_general.css' %}" />
+{% endblock %}
+{% block content %}
+<div class="contenedor-centrado">
+      <div class="card pl-5 pr-5">
+        <div class="card-body">
+            <h4 class="card-title mt-3 mb-5 text-center">Registrate</h4>
+          <form action="" method="POST">
+            {% csrf_token %}
+            <div class="form-group row">
+              <input
+                type="text"
+                name="nombre"
+                id="nombre"
+                class="form-control"
+                placeholder="Nombre"
+              />
+            </div>
+            <div class="form-group row">
+              <input
+                type="text"
+                name="apellido"
+                id="apellido"
+                class="form-control"
+                placeholder="Apellido"
+              />
+            </div>
+            <div class="form-group row">
+              <input
+                type="email"
+                name="usuario"
+                id="usuario"
+                class="form-control"
+                placeholder="Usuario"
+              />
+            </div>
+            <div class="form-group row">
+              <input
+                type="password"
+                name="password"
+                id="password"
+                class="form-control"
+                placeholder="Contraseña"
+              />
+            </div>
+            <div class="form-group row mt-4 d-flex justify-content-center">
+                <input type="submit" value="Registrar" class="btn btn-primary btn-lg btn-block">
+            </div>
+          </form>
+        </div>
+  </div>
+</div>
+{% endblock %}

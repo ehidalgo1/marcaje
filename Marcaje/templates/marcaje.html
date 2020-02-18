@@ -1,0 +1,40 @@
+{% extends 'template_base.html' %} {% load static %} {% block css %}
+<link rel="stylesheet" href="{% static 'css/estilo_general.css' %}" />
+{% endblock %} {% block content %}
+<div class="contenedor-centrado">
+  <div class="card pl-5 pr-5 pt-3">
+    <div class="card-body">
+      <form action="" method="post">
+        {% csrf_token %}
+        <div class="row">
+          <div class="col-md-6 m-2">
+            <input
+              class="form-check-input"
+              type="radio"
+              name="tipo"
+              id="entrada"
+              value="E"
+            />
+            <label class="form-check-label" for="entrada">Entrada</label>
+          </div>
+          <div class="col-md-6 m-2">
+            <input
+              class="form-check-input"
+              type="radio"
+              name="tipo"
+              id="salida"
+              value="S"
+            />
+            <label class="form-check-label" for="salida">Salida</label>
+          </div>
+        </div>
+        <div class="row">
+          <div class="form-group col-md-12 mt-3">
+            <input type="submit" value="Marcar" class="btn btn-primary btn-block ">
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}
