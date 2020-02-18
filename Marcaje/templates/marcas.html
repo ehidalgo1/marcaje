@@ -1,0 +1,42 @@
+{% extends 'template_base.html' %}
+{% load static %}
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/estilo_general.css' %}" />
+{% endblock %}
+{% block content %}
+<div class="container">
+    <div class="card mt-5 text-center p-3 shadow">
+        <h3 class="card-title">Lista Marcajes</h3>
+    </div>
+    <div class="card mt-5 shadow">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>FECHA</th>
+                            <th>HORA</th>
+                            <th>TIPO</th>
+                            <th>USUARIO</th>
+                            <th>OPCIONES</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for m in lista_marcajes %}
+                        <tr>
+                            <td>{{m.fecha}}</td>
+                            <td>{{m.hora}}</td>
+                            <td>{{m.tipo}}</td>
+                            <td>{{m.usuario.nombre}} {{m.usuario.apellido}}</td>
+                            <td><button class="btn btn-sm btn-warning">Editar</button></td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block js %}
+{% endblock %}
