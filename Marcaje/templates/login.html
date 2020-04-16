@@ -1,0 +1,62 @@
+{% extends 'template_base.html' %} {% load static %} {% block css %}
+<link rel="stylesheet" href="{% static 'css/estilo_general.css' %}" />
+{% endblock %} {% block content %}
+<div class="contenedor-centrado">
+  <div class="card shadow">
+    <div class="card-body m-4 pt-0">
+      <div class="d-flex justify-content-center p-2 mb-3">
+        <img src="{% static 'img/logox128.png' %}" alt="logo_login" />
+      </div>
+      <h5 class="d-flex justify-content-center p-2 mb-3">Iniciar sesion</h5>
+      <div class="form">
+        <form action="" method="post" id="form-login">
+          {% csrf_token %}
+          <div class="form-group row">
+            <div class="input-group">
+              <div class="input-group-prepend">
+                <span class="input-group-text"
+                  ><i class="fas fa-user"></i
+                ></span>
+              </div>
+              <input
+                type="email"
+                name="usuario"
+                id="usuario"
+                placeholder="Usuario"
+                class="form-control"
+              />
+            </div>
+          </div>
+          <div class="form-group row">
+            <div class="input-group">
+              <div class="input-group-prepend">
+                <span class="input-group-text"><i class="fas fa-key"></i></span>
+              </div>
+              <input
+                  type="password"
+                  name="password"
+                  id="password"
+                  placeholder="Contraseña"
+                  class="form-control"
+                />
+            </div>
+          </div>
+          <div class="form-group row">
+            <input
+              type="submit"
+              value="Iniciar sesión"
+              class="btn btn-primary btn-block btn-lg"
+            />
+          </div>
+        </form>
+      </div>
+      <label for="registro">¿No tienes cuenta?</label>&nbsp;<a
+        href="{% url 'registro' %}"
+        >Registrate</a
+      >
+    </div>
+  </div>
+</div>
+{% endblock %} {% block js %}
+<script src="{% static 'js/login.js' %}"></script>
+{% endblock %}

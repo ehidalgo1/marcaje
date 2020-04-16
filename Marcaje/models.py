@@ -13,3 +13,5 @@ class Marcaje(models.Model):
     hora=models.TimeField()
     tipo=models.CharField(max_length=255)
     usuario=models.ForeignKey(Usuario, null=True, blank=True, on_delete=models.CASCADE)
+
+

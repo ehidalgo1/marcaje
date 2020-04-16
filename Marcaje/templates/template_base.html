@@ -16,6 +16,10 @@
       integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
       crossorigin="anonymous"
     />
+    <link rel="icon" href="{% static 'img/favicon.png' %}" type="image/png" />
+
+    <!-- font awesome-->
+    <link rel="stylesheet" href="{% static 'plugins/fontawesome/css/all.css' %}">
     <!--bloques para agregar adicionalmente css y js desde los templates necesarios-->
     {% block css %} {% endblock %}
     <!--titulo dinamico para utilizar desde otros templates-->
@@ -40,6 +44,7 @@
       integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
       crossorigin="anonymous"
     ></script>
-    {% block js %} {% endblock %} 
+    <script src="{% static 'plugins/fontawesome/js/all.js' %}"></script>
+    {% block js %} {% endblock %}
   </body>
 </html>
