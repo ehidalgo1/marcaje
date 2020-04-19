@@ -15,21 +15,22 @@
                 <table class="table">
                     <thead>
                         <tr>
-                            <th>FECHA</th>
-                            <th>HORA</th>
-                            <th>TIPO</th>
-                            <th>USUARIO</th>
-                            <th>OPCIONES</th>
+                            <th>Fecha</th>
+                            <th>Entrada</th>
+                            <th>Salida</th>
                         </tr>
                     </thead>
                     <tbody>
                         {% for m in lista_marcajes %}
                         <tr>
                             <td>{{m.fecha}}</td>
-                            <td>{{m.hora}}</td>
-                            <td>{{m.tipo}}</td>
-                            <td>{{m.usuario.nombre}} {{m.usuario.apellido}}</td>
-                            <td><button class="btn btn-sm btn-warning" onclick="editarMarca({{m.usuario.apellido}})" >Editar</button></td>
+                            <td>{{m.entrada}}</td>
+                            {% if m.salida == null %}
+                            <td></td>
+                            {% else %}
+                            <td>{{m.salida}}</td>
+                            {% endif %}
+                            
                         </tr>
                         {% endfor %}
                     </tbody>

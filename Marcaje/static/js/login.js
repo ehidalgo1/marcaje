@@ -27,15 +27,18 @@ formLogin.addEventListener('submit', function(e){
         return res.json();
     })
     .then(data => {
+        console.log(data);
           if (data.status === 200) {
               let url = '/marcaje/'
               window.location.href = url;
-          }else{
+          }else if(data.status === 100){
               alert(`Usuario y/o contraseña incorrectos`);
-          }
+          }else if(data.status === 500){
+            alert(`error de servidor`);
+        }
     })
     .catch( data => {
-        console.log(data);
+        alert(data);
     })
 
 });

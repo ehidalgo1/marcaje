@@ -1,55 +1,109 @@
-from django.shortcuts import render,redirect
-from django.http import JsonResponse, HttpResponse
-from Marcaje.models import Usuario,Marcaje
-from datetime import date,datetime
-import json
+from datetime import date, datetime
+from django.shortcuts import render, redirect
+from django.contrib.auth.models import User
+from django.http import JsonResponse
+from django.contrib.auth import authenticate, logout
+from django.contrib.auth import login as auth_login
+from .models import Marcaje
 
 # Create your views here.
 def login(request):
     if request.POST:
-        response_data = {'status' : 0,'result' : ''}
+        response_data = {'status' : 0, 'result' : ''}
         try:
-            usuario=request.POST['usuario']
-            password=request.POST['password']
-            user=None
-            try:
-                user=Usuario.objects.get(usuario=usuario, password=password)
-            except Usuario.DoesNotExist:
-                response_data['status'] = 100
-                response_data['result'] = 'not found'
+            usuario = request.POST['usuario']
+            password = request.POST['password']
+            user = authenticate(request, username=usuario, password=password)
+            #buscando usuario
             if user is not None:
+                request.session['usuario_sesion'] = user.username
+                auth_login(request, user)
                 response_data['status'] = 200
                 response_data['result'] = 'success'
+            else:
+                response_data['status'] = 100
+                response_data['result'] = 'not found'
         except:
             response_data['status'] = 500
             response_data['result'] = 'internal server error'        
         return JsonResponse(response_data)
-    return render(request,'login.html')
+    return render(request, 'login.html')
 
-def get_registro(request):
+def registro(request):
     if request.POST:
-        nombre=request.POST.get('nombre')
-        apellido=request.POST.get('apellido')
-        usuario=request.POST.get('usuario')
-        password=request.POST.get('password')
-        User=Usuario(nombre=nombre.upper(),apellido=apellido.upper(),usuario=usuario.lower(),password=password,token=Generar_token.execute())
-        User.save()
-        return redirect('home')
+        nombre = request.POST['nombre']
+        apellido = request.POST['apellido']
+        email = request.POST['usuario']
+        password = request.POST['password']
+        user = User.objects.create_user(email.lower(), email.lower(), password)
+        user.first_name = nombre.lower()
+        user.last_name = apellido.lower()
+        user.save()
+        return redirect('login')
     return render(request, 'registro.html')
 
-def get_marcaje(request):
-    if request.POST:
-        id = request.session['usuario_sesion']
-        fecha = date.today()
-        hora = datetime.now().time()
-        tipo = request.POST.get('tipo')
-        usuario = Usuario.objects.get(id=id)
-        marca = Marcaje(fecha=fecha,hora=hora,tipo=tipo,usuario=usuario)
-        marca.save()
-    return render(request, 'marcaje.html')
+def marcaje(request):
+    if request.user.is_authenticated:
+        if request.POST:
+            usuario = request.user.username
+            fecha = date.today()
+            hora = datetime.now().time()
+            tipo = request.POST['tipo']
+            marca = None
+            try:
+                marca = Marcaje.objects.get(fecha=fecha, usuario=usuario)
+            except:
+                marca = None
+            response_data = {
+                'status' : 200,
+                'result' : 'success',
+                'tipo' : '',
+                'hora' : hora.strftime("%H:%M:%S"),
+                'message' : ''
+            }
+            if marca is None:
+                if tipo == "entrada":
+                    marca = Marcaje(fecha=fecha, entrada=hora, salida=None, usuario=usuario)
+                    response_data['tipo'] = tipo
+                else:
+                    response_data['status'] = 300
+                    response_data['result'] = 'not complete'
+                    response_data['message'] = 'Debe marcar primero la entrada'
 
-def get_marcas(request):
-    lista_marcajes = Marcaje.objects.all()
-    context = {'lista_marcajes':lista_marcajes}
-    return render(request,'marcas.html', context)
+            else:
+                if marca.entrada is not None and marca.salida is not None:
+                    response_data['status'] = 300
+                    response_data['result'] = 'failed'
+                    response_data['message'] = 'Usted ya ha completado las marcas del dia'
+                else:
+                    if tipo == "salida":
+                        if marca.salida is None:
+                            marca.salida = hora
+                            response_data['tipo'] = tipo
+                    elif tipo == "entrada":
+                        response_data['status'] = 300
+                        response_data['result'] = 'failed'
+                        response_data['message'] = 'Usted ya ha marcado la entrada, intente con la salida'
+            #guardando marcaje
+            marca.save()
+            return JsonResponse(response_data)
+        return render(request, 'marcaje.html')
+    return redirect('login')
+
+def marcas(request):
+    if request.user.is_authenticated:
+        usuario = request.user.username
+        lista_marcajes = Marcaje.objects.filter(usuario=usuario)
+        context = {'lista_marcajes':lista_marcajes}
+        return render(request, 'marcas.html', context)
+    else:
+        return redirect('login')
+
+def log_out(request):
+    try:
+        logout(request)
+        del request.session['usuario_sesion']
+    except:
+        pass
+    return redirect('login')
     

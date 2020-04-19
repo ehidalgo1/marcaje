@@ -20,7 +20,8 @@ from Marcaje import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('login/', views.login, name='login'),
-    path('registro/', views.get_registro, name='registro'),
-    path('marcaje/',views.get_marcaje,name='marcaje'),
-    path('marcas/',views.get_marcas,name='marcas')
+    path('registro/', views.registro, name='registro'),
+    path('marcaje/', views.marcaje, name='marcaje'),
+    path('marcas/', views.marcas, name='marcas'),
+    path('log-out/', views.log_out, name='log-out')
 ]

@@ -6,7 +6,7 @@
 <div class="contenedor-centrado">
   <div class="card pl-5 pr-5 pt-3 shadow">
     <div class="card-body">
-      <form action="" method="post">
+      <form action="" method="post" id="form-marcaje">
         {% csrf_token %}
         <div class="row">
           <div class="col-md-6 m-2">
@@ -14,8 +14,8 @@
               class="form-check-input"
               type="radio"
               name="tipo"
-              id="entrada"
-              value="E"
+              id="tipo"
+              value="entrada"
             />
             <label class="form-check-label" for="entrada">Entrada</label>
           </div>
@@ -24,8 +24,8 @@
               class="form-check-input"
               type="radio"
               name="tipo"
-              id="salida"
-              value="S"
+              id="tipo"
+              value="salida"
             />
             <label class="form-check-label" for="salida">Salida</label>
           </div>
@@ -38,5 +38,12 @@
       </form>
     </div>
   </div>
+  <div id="contenedor-marcaje">
+    
+  </div>
 </div>
 {% endblock %}
+{% block js %}
+<script src="{% static 'js/marcaje.js' %}"></script>
+{% endblock %}
+
