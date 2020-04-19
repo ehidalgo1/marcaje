@@ -100,10 +100,6 @@ def marcas(request):
         return redirect('login')
 
 def log_out(request):
-    try:
-        logout(request)
-        del request.session['usuario_sesion']
-    except:
-        pass
+    logout(request)
     return redirect('login')
     

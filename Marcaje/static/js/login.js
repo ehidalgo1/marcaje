@@ -15,7 +15,7 @@ formLogin.addEventListener('submit', function(e){
     fd.append("usuario",usuario);
     fd.append("password",password);
 
-    fetch('/login/',
+    fetch('',
     {
         method: 'POST',
         body: fd,
