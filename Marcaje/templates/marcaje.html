@@ -1,36 +1,70 @@
 {% extends 'template_base.html' %} {% load static %} {% block css %}
 <link rel="stylesheet" href="{% static 'css/estilo_general.css' %}" />
-{% endblock %} 
-{% block content %}
-{% include 'menu.html' %}
-<div class="contenedor-centrado">
-  <div class="card pl-5 pr-5 pb-5 pt-3 shadow">
-    <div class="card-body">
-      <div class="d-flex justify-content-center">
-      <img src="{% static 'img/logox128.png' %}" alt="" srcset="">
-      </div>
-      <div class="row class mt-5">
-        <div class="col-md-6">
-          <form action="" method="post" id="form-marcaje-entrada">
-            {% csrf_token %}
-            <input type="submit" value="Entrada" class="btn btn-success btn-block btn-lg">
-          </form>
+{% endblock %} {% block content %} {% include 'menu.html' %}
+<div class="container-fluid">
+  <div class="row mt-5 d-flex justify-content-center">
+    <div class="card pl-3 pr-3 pb-3 pt-3 shadow">
+      <div class="card-body">
+        <div class="d-flex justify-content-center">
+          <img src="{% static 'img/logox128.png' %}" alt="" srcset="" />
         </div>
-        <div class="col-md-6">
-          <form action="" method="post" id="form-marcaje-salida">
-            {% csrf_token %}
-            <input type="submit" value="Salida" class="btn btn-info btn-block btn-lg">
-          </form>
+        <div class="row class mt-5">
+          {% if marca.entrada == null %}
+          <div class="col-md">
+            <form action="" method="post" id="form-marcaje-entrada">
+              {% csrf_token %}
+              <input
+                type="submit"
+                value="Entrada"
+                id="btn-entrada"
+                class="btn btn-success btn-block btn-lg"
+              />
+            </form>
+          </div>
+          {% endif %} {% if marca.salida == null %}
+          <div class="col-md">
+            <form action="" method="post" id="form-marcaje-salida">
+              {% csrf_token %}
+              <input
+                type="submit"
+                value="Salida"
+                id="btn-salida"
+                class="btn btn-info btn-block btn-lg"
+              />
+            </form>
+          </div>
+          {% endif %}
         </div>
       </div>
     </div>
   </div>
-  <div id="contenedor-marcaje">
-
+  <div class="row mt-4 d-flex justify-content-center">
+    <div id="contenedor-marcaje">
+      <div class="card pl-5 pr-5 pb-0">
+        <div class="card-body">
+          <table class="table mt-0">
+            <thead>
+              <tr>
+                <th class="text-center">Entrada</th>
+                <th class="text-center">Salida</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr id="row-marcas">
+                {% if marca.entrada %}
+                <td class="text-center">{{marca.entrada}}</td>
+                {% endif %}
+                {% if marca.salida %}
+                <td class="text-center">{{marca.salida}}</td>
+                {% endif %}
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
-{% endblock %}
-{% block js %}
+{% endblock %} {% block js %}
 <script src="{% static 'js/marcaje.js' %}"></script>
 {% endblock %}
-

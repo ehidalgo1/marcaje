@@ -5,6 +5,7 @@ from django.http import JsonResponse
 from django.contrib.auth import authenticate, logout
 from django.contrib.auth import login as auth_login
 from .models import Marcaje
+import json
 
 # Create your views here.
 def login(request):
@@ -57,8 +58,8 @@ def marcaje(request):
             response_data = {
                 'status' : 200,
                 'result' : 'success',
-                'tipo' : '',
-                'hora' : hora.strftime("%H:%M:%S"),
+                'type' : '',
+                'hora' : hora.strftime("%H:%M"),
                 'message' : ''
             }
             if marca is None:
@@ -80,14 +81,26 @@ def marcaje(request):
                         if marca.salida is None:
                             marca.salida = hora
                             response_data['tipo'] = tipo
-                    elif tipo == "entrada":
-                        response_data['status'] = 300
-                        response_data['result'] = 'failed'
-                        response_data['message'] = 'Usted ya ha marcado la entrada, intente con la salida'
-            #guardando marcaje
             marca.save()
             return JsonResponse(response_data)
-        return render(request, 'marcaje.html')
+        fecha = date.today()
+        usuario = request.user.username
+        try:
+            marca = Marcaje.objects.get(fecha=fecha, usuario=usuario)
+        except:
+            marca = None
+        #declarando para saber si existe marca del dia
+        data_marca = {
+            'usuario' : request.user.first_name.upper()+" "+request.user.last_name.upper(),
+            'entrada' : None,
+            'salida' : None
+        }
+        if marca is not None:
+            data_marca['entrada'] = marca.entrada
+            data_marca['salida'] = marca.salida
+            # return JsonResponse(data_marca)
+        context = {'marca' : data_marca}
+        return render(request, 'marcaje.html', context)
     return redirect('login')
 
 def marcas(request):

@@ -1,60 +1,74 @@
+// function obtenerMarcas(){
+//     fetch('/marcaje/')
+//     .then(resp => resp.json())
+//     .then(data => {
+//         console.log(data);
+//     })
+//     .catch(error => {
+//         console.log(error);
+//     })
+// }
 
+const marcarEntrada = document.querySelector("#btn-entrada");
+const marcaSalida = document.querySelector("#btn-salida");
 
-const marcaje = document.querySelector('#form-marcaje');
-
-marcaje.addEventListener("submit",function(e){
+if (marcarEntrada !== null) {
+  marcarEntrada.addEventListener("click", function (e) {
     
+    this.remove();
+
+    let tipo = "entrada";
+
+    enviarMarca(tipo);
+  });
+}
+
+if (marcaSalida !== null) {
+  marcaSalida.addEventListener("click", function (e) {
     e.preventDefault();
 
-    let check_tipo = document.getElementsByName('tipo');
-    const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+    this.remove();
 
-    let tipo;
+    let tipo = "salida";
 
-    console.log(check_tipo);
+    enviarMarca(tipo);
+  });
+}
 
-    for (let i = 0; i < check_tipo.length; i++) {
+function enviarMarca(tipo) {
+  const csrftoken = document.querySelector("[name=csrfmiddlewaretoken]").value;
 
-        if(check_tipo[i].checked){
-            tipo = check_tipo[i].value;
-        }
-    }
-    console.log(tipo);
-    
-    let fd = new FormData();
-    fd.append('tipo', tipo);
-    
-    fetch('/marcaje/',
-    {
-        method: 'POST',
-        body: fd,
-        headers: {
-            'X-CSRFToken': csrftoken
-        }
+  let fd = new FormData();
+  fd.append("tipo", tipo);
+
+
+  fetch("/marcaje/", {
+    method: "POST",
+    body: fd,
+    headers: {
+      "X-CSRFToken": csrftoken,
+    },
+  })
+    .then(function (res) {
+      return res.json();
     })
-    .then(function(res){
-        return res.json();
-    })
-    .then(data => {
-        console.log(data);
-          if (data.status === 200) {
-              const mostrar_marcas = document.getElementById('contenedor-marcaje');
-              let card_hora = document.createElement('div');
-              card_hora.setAttribute('class','card');
-              let card_hora_body = document.createElement('div');
-              card_hora_body.setAttribute('class','card-body');
-              card_hora_body.innerHTML = `<label>Marca: ${data.tipo} Hora: ${data.hora}</label>`;
-              mostrar_marcas.append(card_hora);
-              card_hora.append(card_hora_body);
+    .then((data) => {
+      console.log(data);
+      if (data.status === 200) {
 
-          }else if(data.status === 300){
-              alert(data.message);
-          }else if(data.status === 500){
-            alert(`error de servidor`);
-        }
-    })
-    .catch( data => {
-        alert(data);
-    })
+        let fila = document.getElementById('row-marcas');
+        let td = document.createElement('td');
+        td.setAttribute('class','text-center');
+        td.innerHTML = data.hora;
+        fila.appendChild(td);
 
-});
+      } else if (data.status === 300) {
+        alert(data.message);
+      } else if (data.status === 500) {
+        alert(`error de servidor`);
+      }
+    })
+    .catch((data) => {
+      alert(data);
+    });
+};
