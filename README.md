@@ -14,8 +14,8 @@ La base de datos esta montada en postgreSQL
 
 Una vez descargado el proyecto antes de ejecutar se debe tener instalado los siguientes componentes para que esta pudiese ser ejecutada.
 
-- Python (3.8 o ultima version más estable)
-- PostgreSQL (ultima version más estable)
+- Python (3.8 o última versión más estable)
+- PostgreSQL (última versión más estable)
 - alternativa para ejecutar (VS CODE o ATOM)
 
 # Antes de ejecutar el proyecto
