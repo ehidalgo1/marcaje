@@ -10,7 +10,7 @@
         </div>
         <div class="row class mt-5">
           {% if marca.entrada == null %}
-          <div class="col-md">
+          <div class="col text-center">
             <form action="" method="post" id="form-marcaje-entrada">
               {% csrf_token %}
               <input
@@ -22,7 +22,7 @@
             </form>
           </div>
           {% endif %} {% if marca.salida == null %}
-          <div class="col-md">
+          <div class="col text-center">
             <form action="" method="post" id="form-marcaje-salida">
               {% csrf_token %}
               <input
